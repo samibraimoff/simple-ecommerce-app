@@ -1,4 +1,7 @@
 import React, { useState, useEffect } from 'react';
+import { useDispatch, useSelector } from 'react-redux';
+
+import { getData } from '../redux/actions/actions';
 import { API_KEY, API_URI } from '../config';
 import { Preloader } from './Preloader';
 import { GoodsList } from './GoodsList';
@@ -7,6 +10,9 @@ import { BasketList } from './BasketList';
 import { Alert } from './Alert';
 
 export const Shop = () => {
+  const dispatch = useDispatch();
+  const { list } = useSelector((store) => store.shop);
+
   const [goods, setGoods] = useState([]);
   const [loading, setLoading] = useState(true);
   const [order, setOrder] = useState([]);
@@ -70,33 +76,29 @@ export const Shop = () => {
     setOrder(orders);
   };
 
-  const getData = () => {
-    fetch(API_URI, {
-      headers: {
-        'Content-Type': 'application/json',
-        Authorization: API_KEY,
-      },
-    })
-      .then((response) => response.json())
-      .then((data) => {
-        data.items && setGoods(data.items);
-        setLoading(false);
-      })
-      .catch((error) => console.log(error));
-  };
+  // const getData = () => {
+  //   fetch(API_URI, {
+  //     headers: {
+  //       'Content-Type': 'application/json',
+  //       Authorization: API_KEY,
+  //     },
+  //   })
+  //     .then((response) => response.json())
+  //     .then((data) => {
+  //       data.items && setGoods(data.items);
+  //       setLoading(false);
+  //     })
+  //     .catch((error) => console.log(error));
+  // };
 
   useEffect(() => {
-    getData();
-  }, []);
+    dispatch(getData());
+  }, [dispatch]);
 
   return (
     <main className='container content'>
       <Cart quantity={order.length} handleBasketShow={handleBasketShow} />
-      {loading ? (
-        <Preloader />
-      ) : (
-        <GoodsList goods={goods} addOrder={addOrder} />
-      )}
+      {loading ? <Preloader /> : <GoodsList list={list} addOrder={addOrder} />}
       {isBasketShow && (
         <BasketList
           order={order}
