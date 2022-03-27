@@ -1,4 +1,11 @@
-import { GET_DATA_FAILURE, GET_DATA_REQUEST, GET_DATA_SUCCESS } from '../types';
+import {
+  GET_DATA_FAILURE,
+  GET_DATA_REQUEST,
+  GET_DATA_SUCCESS,
+  SET_ORDER_FAILURE,
+  SET_ORDER_REQUEST,
+  SET_ORDER_SUCCESS,
+} from '../types';
 
 const initialState = {
   list: [],

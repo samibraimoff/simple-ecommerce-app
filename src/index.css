@@ -111,3 +111,7 @@ nav {
   color: rgb(0, 0, 153);
   font-weight: 800;
 }
+
+.card-image {
+  width: 10rem;
+}

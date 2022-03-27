@@ -2,7 +2,6 @@ import React, { useState, useEffect } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 
 import { getData } from '../redux/actions/actions';
-import { API_KEY, API_URI } from '../config';
 import { Preloader } from './Preloader';
 import { GoodsList } from './GoodsList';
 import { Cart } from './Cart';
@@ -11,10 +10,14 @@ import { Alert } from './Alert';
 
 export const Shop = () => {
   const dispatch = useDispatch();
-  const { list } = useSelector((store) => store.shop);
+  const { list, loading, error } = useSelector((store) => store.shop);
 
-  const [goods, setGoods] = useState([]);
-  const [loading, setLoading] = useState(true);
+  useEffect(() => {
+    dispatch(getData());
+  }, [dispatch]);
+
+  // const [goods, setGoods] = useState([]);
+  // const [loading, setLoading] = useState(true);
   const [order, setOrder] = useState([]);
   const [isBasketShow, setIsBasketShow] = useState(false);
   const [alertName, setAlertName] = useState('');
@@ -90,10 +93,6 @@ export const Shop = () => {
   //     })
   //     .catch((error) => console.log(error));
   // };
-
-  useEffect(() => {
-    dispatch(getData());
-  }, [dispatch]);
 
   return (
     <main className='container content'>
