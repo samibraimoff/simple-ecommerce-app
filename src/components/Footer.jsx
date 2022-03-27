@@ -6,8 +6,13 @@ export const Footer = () => {
       <div className='footer-copyright'>
         <div className='container'>
           © {new Date().getFullYear()} Shop e-commerce app
-          <a className='grey-text text-lighten-4 right' href='#!'>
-            Home
+          <a
+            className='grey-text text-lighten-4 right'
+            href='https://github.com/samibraimoff/simple-ecommerce-app'
+            target='_blank'
+            rel='noreferrer'
+          >
+            Github
           </a>
         </div>
       </div>
