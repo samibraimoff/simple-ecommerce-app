@@ -4,11 +4,15 @@ import { Shop } from './components/Shop';
 import { Header } from './components/Header';
 import { Footer } from './components/Footer';
 
+import { ContextProvider } from './context/context';
+
 export const App = () => {
   return (
     <>
       <Header />
-      <Shop />
+      <ContextProvider>
+        <Shop />
+      </ContextProvider>
       <Footer />
     </>
   );
