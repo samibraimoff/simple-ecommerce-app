@@ -14,6 +14,13 @@ const initialState = {
 export const ContextProvider = ({ children }) => {
   const [value, dispatch] = useReducer(reducer, initialState);
 
+  value.setData = (data) => {
+    dispatch({
+      type: 'SET_DATA',
+      payload: data,
+    });
+  };
+
   value.addToBasket = (item) => {
     dispatch({
       type: 'ADD_TO_BASKET',

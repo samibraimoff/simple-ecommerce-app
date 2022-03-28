@@ -1,4 +1,5 @@
-import React, { useState, useEffect } from 'react';
+import React, { useEffect, useContext } from 'react';
+import { ShopContext } from '../context/context';
 
 import { Preloader } from './Preloader';
 import { GoodsList } from './GoodsList';
@@ -9,68 +10,8 @@ import { Alert } from './Alert';
 import { API_KEY, API_URI } from '../config';
 
 export const Shop = () => {
-  const [goods, setGoods] = useState([]);
-  const [loading, setLoading] = useState(true);
-  const [order, setOrder] = useState([]);
-  const [isBasketShow, setIsBasketShow] = useState(false);
-  const [alertName, setAlertName] = useState('');
-
-  const closeAlert = () => {
-    setAlertName('');
-  };
-
-  const handleBasketShow = () => {
-    setIsBasketShow((prevState) => !prevState);
-  };
-
-  const addOrder = (item) => {
-    const itemIndex = order.findIndex((orderItem) => orderItem.id === item.id);
-
-    if (itemIndex < 0) {
-      const newItem = {
-        ...item,
-        quantity: 1,
-      };
-
-      setOrder([...order, newItem]);
-    } else {
-      const newOrder = order.map((orderItem, index) => {
-        if (index === itemIndex) {
-          return {
-            ...orderItem,
-            quantity: orderItem.quantity + 1,
-          };
-        } else {
-          return orderItem;
-        }
-      });
-
-      setOrder(newOrder);
-    }
-
-    setAlertName(item.name);
-  };
-
-  const changeOrderQuantity = (id, sign) => {
-    const newOrder = order.map((item) => {
-      const newQuantity = item.quantity + 1 * sign;
-      if (item.id === id) {
-        return {
-          ...item,
-          quantity: newQuantity >= 0 ? newQuantity : 0,
-        };
-      } else {
-        return item;
-      }
-    });
-
-    setOrder(newOrder);
-  };
-
-  const removeFromBasket = (id) => {
-    const orders = order.filter((item) => item.id !== id);
-    setOrder(orders);
-  };
+  const { setData, order, loading, isBasketShow, alertName } =
+    useContext(ShopContext);
 
   const getData = () => {
     fetch(API_URI, {
@@ -81,8 +22,7 @@ export const Shop = () => {
     })
       .then((response) => response.json())
       .then((data) => {
-        data && setGoods(data);
-        setLoading(false);
+        setData(data);
       })
       .catch((error) => console.log(error));
   };
@@ -93,22 +33,11 @@ export const Shop = () => {
 
   return (
     <main className='container content'>
-      <Cart quantity={order.length} handleBasketShow={handleBasketShow} />
-      {loading ? (
-        <Preloader />
-      ) : (
-        <GoodsList goods={goods} addOrder={addOrder} />
-      )}
-      {isBasketShow && (
-        <BasketList
-          order={order}
-          handleBasketShow={handleBasketShow}
-          removeFromBasket={removeFromBasket}
-          changeOrderQuantity={changeOrderQuantity}
-        />
-      )}
+      <Cart quantity={order.length} />
+      {loading ? <Preloader /> : <GoodsList />}
+      {isBasketShow && <BasketList />}
 
-      {alertName && <Alert closeAlert={closeAlert} name={alertName} />}
+      {alertName && <Alert />}
     </main>
   );
 };

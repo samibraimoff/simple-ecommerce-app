@@ -1,5 +1,12 @@
 export const reducer = (state, { type, payload }) => {
   switch (type) {
+    case 'SET_DATA':
+      return {
+        ...state,
+        goods: payload || [],
+        loading: false,
+      };
+
     case 'INCREASE_QUANTITY':
       return {
         ...state,
