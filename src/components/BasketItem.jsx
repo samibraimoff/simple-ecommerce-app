@@ -1,24 +1,26 @@
-import React from 'react';
+import React, { useContext } from 'react';
+import { ShopContext } from '../context/context';
 
 export const BasketItem = (props) => {
+  const { removeFromBasket, increaseOrderQuantity, decreaseOrderQuantity } =
+    useContext(ShopContext);
   const {
     item: { id, name, price, quantity },
-    removeFromBasket = Function.prototype,
-    changeOrderQuantity = Function.prototype,
   } = props;
+
   return (
     <li className='collection-item'>
       {name} x{' '}
       <span
         className='basket-quantity-change'
-        onClick={() => changeOrderQuantity(id, -1)}
+        onClick={() => decreaseOrderQuantity(id)}
       >
         -
       </span>{' '}
       {quantity}
       <span
         className='basket-quantity-change'
-        onClick={() => changeOrderQuantity(id, +1)}
+        onClick={() => increaseOrderQuantity(id)}
       >
         +
       </span>{' '}

@@ -3,7 +3,7 @@ import { ShopContext } from '../context/context';
 
 import { GoodsItem } from './GoodsItem';
 
-export const GoodsList = (props) => {
+export const GoodsList = () => {
   const { goods = [] } = useContext(ShopContext);
 
   if (!goods.length) {
